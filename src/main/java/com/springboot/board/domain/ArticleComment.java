@@ -20,9 +20,8 @@ import java.util.Objects;
         @Index(columnList = "createdAt"),
         @Index(columnList = "createdBy")
 })
-@EntityListeners(AuditingEntityListener.class) // Auditing을 확인해주는 어노테이션
 @Entity
-public class ArticleComment {
+public class ArticleComment extends AuditingFields{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // mySQL의 Auto_increament 사용
@@ -30,12 +29,6 @@ public class ArticleComment {
 
     @Setter @ManyToOne(optional = false) private Article article;  // 게시글 (ID)
     @Setter @Column(nullable = false, length = 500) private String content;  // 내용
-
-    // 어노테이션을 넣어주므로 자동으로 Auditing이 된다.
-    @CreatedDate @Column(nullable = false) private LocalDateTime createdAt;  // 생성일시
-    @CreatedBy @Column(nullable = false, length = 100) private String createdBy;  // 생성자
-    @LastModifiedDate @Column(nullable = false) private LocalDateTime modifiedAt;  // 수정일시
-    @LastModifiedBy @Column(nullable = false, length = 100) private String modifiedBy;  // 수정자
 
     // 기본생성자
     protected ArticleComment(){}
