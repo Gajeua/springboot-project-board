@@ -1,10 +1,12 @@
 package com.springboot.board.controller;
 
+import com.springboot.board.config.SecurityConfig;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -15,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @DisplayName("View Controller - Article")
+@Import(SecurityConfig.class)
 @WebMvcTest(ArticleController.class)  // 해당 클래스만 읽어들여서 테스트 한다.
 class ArticleControllerTest {
 
