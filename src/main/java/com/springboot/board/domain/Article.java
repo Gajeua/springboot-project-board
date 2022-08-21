@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Getter  // 임의의 값을 바꿀 필드에만 Setter를 사용
-@ToString  // toString 메서드를 Lombok이 알아서 해준다.
+@ToString(callSuper = true)  // toString 메서드를 Lombok이 알아서 해준다.
 @Table(indexes = {  // 검색기능을 할때 사용할 인덱싱 작업.
         @Index(columnList = "title"),
         @Index(columnList = "hashtag"),
@@ -23,6 +23,8 @@ public class Article extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // mySQL의 Auto_increament 사용
     private Long id;
 
+    @Setter @ManyToOne(optional = false) private  UserAccount userAccount; // 유저 정보 (ID)
+
     @Setter @Column(nullable = false) private String title;  // 제목
     @Setter @Column(nullable = false, length = 10000) private String content;  // 내용
 
@@ -31,7 +33,7 @@ public class Article extends AuditingFields {
     // 양방향 바인딩
     // Article에 연동되어있는 Comment는 중복을 허용하지 않고 컬렉션으로 보겠다.
     @ToString.Exclude
-    @OrderBy("id")
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
@@ -40,14 +42,15 @@ public class Article extends AuditingFields {
     }
 
     // 값 변경을 할(Setter를 가진) 파라미터를 모두 가진 생성자
-    private Article(String title, String content, String hashtag) {
+    private Article(UserAccount userAccount, String title, String content, String hashtag) {
+        this.userAccount = userAccount;
         this.title = title;
         this.content = content;
         this.hashtag = hashtag;
     }
 
-    public static Article of(String title, String content, String hashtag) {
-        return new Article(title, content, hashtag);
+    public static Article of(UserAccount userAccount, String title, String content, String hashtag) {
+        return new Article(userAccount, title, content, hashtag);
     }
 
     // 게시글은 추후에 List로 데이터를 받아오고 내보내주는 니즈가 있다.
