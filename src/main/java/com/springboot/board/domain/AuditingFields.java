@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @ToString
 @EntityListeners(AuditingEntityListener.class) // Auditing을 확인해주는 어노테이션
 @MappedSuperclass  // 슈퍼클래스 지정
-public class AuditingFields {
+public abstract class AuditingFields {
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) // 파싱에 대한 룰 정해주는 어노테이션 (ISO 객체를 쓰는 방법)
     @CreatedDate
