@@ -12,6 +12,31 @@
                 <attr sel="td.created-at/time" th:datetime="${article.createdAt}" th:text="${#temporals.format(article.createdAt, 'yyyy-MM-dd')}"/>
             </attr>
         </attr>
-
     </attr>
+
+    <attr sel="#pagination">
+        <attr sel="li[0]"
+              th:class="'page-item' + (${articles.number} <= 0 ? ' disabled' : '')"
+        />
+        <attr sel="li[0]/a"
+              th:text="'previous'"
+              th:href="@{/articles(page=${articles.number - 1})}"
+        />
+        <attr sel="li[1]"
+              th:class="'page-item' + (${pageNumber} == ${articles.number} ? ' disabled' : '')"
+              th:each="pageNumber : ${paginationBarNumbers}">
+            <attr sel="a"
+                  th:text="${pageNumber + 1}"
+                  th:href="@{/articles(page=${pageNumber})}"
+            />
+        </attr>
+        <attr sel="li[2]"
+              th:class="'page-item' + (${articles.number} >= ${articles.totalPages - 1} ? ' disabled' : '')"
+        />
+        <attr sel="li[2]/a"
+              th:text="'next'"
+              th:href="@{/articles(page=${articles.number + 1})}"
+        />
+    </attr>
+
 </thlogic>
