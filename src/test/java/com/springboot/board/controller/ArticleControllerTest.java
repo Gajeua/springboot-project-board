@@ -100,15 +100,18 @@ class ArticleControllerTest {
     public void givenNothing_whenRequestingArticleView_thenReturnArticleView() throws Exception {
         // Given
         Long articleId = 1L;
+        Long totalCount = 1L;
         given(articleService.getArticle(articleId)).willReturn(createArticleWithCommentDto());
+        given(articleService.getArticleCount()).willReturn(totalCount);
         // When & Then
         mvc.perform(get("/articles/" + articleId))
                 .andExpect(status().isOk()) // 상태가 OK인지
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))  // 미디어 타입 지정 (화면이니 TEXT_HTML)
                 .andExpect(view().name("articles/detail"))  // 매핑 될 View의 HTML에 대한 이름 테스트
-                .andExpect(model().attributeExists("article")) // 데이터가 있는지 확인
-                .andExpect(model().attributeExists("articleComments")); // 데이터가 있는지 확인
+                .andExpect(model().attributeExists("articleComments"))
+                .andExpect(model().attribute("totalCount", totalCount)); // 데이터가 있는지 확인
         then(articleService).should().getArticle(articleId);
+        then(articleService).should().getArticleCount();
     }
 
     @Disabled("구현 중")
