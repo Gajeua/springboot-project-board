@@ -22,4 +22,19 @@
         <attr sel="div/small/time" th:datetime="${articleComment.createdAt}" th:text="${#temporals.format(articleComment.createdAt, 'yyyy-MM-dd HH:mm:ss')}" />
         <attr sel="div/p" th:text="${articleComment.content}" />
     </attr>
+
+    <attr sel="#pagination">
+        <attr sel="ul">
+            <attr sel="li[0]"
+                  th:class="'page-item' + (*{id} - 1 <= 0 ? ' disabled' : '')">
+                <attr sel="a"
+                      th:href="*{id} - 1 <= 0 ? '#' : |/articles/*{id -1}" />
+            </attr>
+            <attr sel="li[1]"
+                  th:class="'page-item' + (*{id} + 1 > ${totalCount} ? ' disabled' : '')">
+                <attr sel="a"
+                      th:href="*{id} + 1 > ${totalCount} ? '#' : |/articles/*{id + 1}|" />
+            </attr>
+        </attr>
+    </attr>
 </thlogic>

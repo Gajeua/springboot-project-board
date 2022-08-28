@@ -8,31 +8,29 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@DisplayName("View Controller - Authorization")
+@DisplayName("View 컨트롤러 - 인증")
 @Import(SecurityConfig.class)
-@WebMvcTest
+@WebMvcTest(Void.class)
 public class AuthControllerTest {
 
     private final MockMvc mvc;
-
-    // 생성자 주입 방식
     public AuthControllerTest(@Autowired MockMvc mvc) {
         this.mvc = mvc;
     }
-
-    @DisplayName("[view] [GET] login page (article) page")
+    @DisplayName("[view][GET] 로그인 페이지 - 정상 호출")
     @Test
-    public void givenNothing_whenTryingToLogIn_thenReturnLogInView() throws Exception {
+    public void givenNothing_whenTryingToLogIn_thenReturnsLogInView() throws Exception {
         // Given
-
         // When & Then
         mvc.perform(get("/login"))
-                .andExpect(status().isOk()) // 상태가 OK인지
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML));  // 미디어 타입 지정 (화면이니 TEXT_HTML)
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andDo(MockMvcResultHandlers.print());
     }
 
 }
