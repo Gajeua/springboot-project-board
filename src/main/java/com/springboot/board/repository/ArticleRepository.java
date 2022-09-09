@@ -4,6 +4,7 @@ import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.springboot.board.domain.Article;
 import com.springboot.board.domain.QArticle;
+import com.springboot.board.repository.querydsl.ArticleRepositoryCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +16,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource
 public interface ArticleRepository extends
         JpaRepository<Article, Long>,
+        ArticleRepositoryCustom,
         QuerydslPredicateExecutor<Article>, // 기본적으로 엔티티 안에있는 모든 필드에 대한 기본 검색기능을 추가한다. 기본적인 검색기능이라 Like 검색이나 대소문자 구분이 안된다.
         QuerydslBinderCustomizer<QArticle> { // 여기에는 Q클래스 엔티티로 넣어준다. 커스터마이즈를 오버라이딩해서 원하는 검색 기능으로 수정할 수 있다.
 
